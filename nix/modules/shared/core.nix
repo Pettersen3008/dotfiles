@@ -15,6 +15,7 @@
       jq
       just
       nano
+      gh
       ripgrep
       fd
       fzf
