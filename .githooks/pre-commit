@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Scan staged content for obvious secret leaks before commit.
+# If gitleaks is available, use it. Otherwise use conservative regex checks.
+
+if command -v gitleaks >/dev/null 2>&1; then
+  git diff --cached --binary > /tmp/pre-commit-staged.patch
+  if [[ -s /tmp/pre-commit-staged.patch ]]; then
+    gitleaks detect --no-banner --redact --source . --staged >/dev/null
+  fi
+  exit 0
+fi
+
+# Fallback regex scanning on staged diff
+staged="$(git diff --cached -U0 --no-color || true)"
+
+patterns=(
+  'AKIA[0-9A-Z]{16}'
+  '-----BEGIN (RSA|EC|OPENSSH|PGP) PRIVATE KEY-----'
+  '(?i)npm[_-]?token\s*[:=]\s*['"'"']?[A-Za-z0-9_\-]{16,}'
+  '(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*['"'"']?[A-Za-z0-9_\-]{16,}'
+)
+
+for p in "${patterns[@]}"; do
+  if printf '%s' "$staged" | rg -n "$p" >/dev/null 2>&1; then
+    echo "pre-commit: potential secret detected in staged changes." >&2
+    echo "Install gitleaks for better detection: nix shell nixpkgs#gitleaks" >&2
+    exit 1
+  fi
+done

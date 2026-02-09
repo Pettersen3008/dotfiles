@@ -1,0 +1,31 @@
+# Local backups and temp files
+.zshrc.pre-*
+.zsh-backups/
+*.bak
+*.tmp
+
+# Local secrets (never commit)
+.config/secrets/
+**/*.secret
+**/*.secrets
+**/*.local
+.env
+.env.*
+.config/zsh/local.zsh
+.config/secrets/npm-tokens.env
+.sops.yaml
+secrets/*.env
+secrets/*.sops.env
+!secrets/.gitkeep
+
+# Nix local state files
+nix/result
+nix/result-*
+
+# Ignore legacy top-level symlink shortcuts; keep only .config/* canonical paths
+/alacritty
+/git
+/nvim
+/starship
+/tmux
+/zsh

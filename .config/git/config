@@ -1,0 +1,73 @@
+[user]
+	name = Sander Pettersen
+	email = sanderpette7@gmail.com
+	
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
+
+[credential]
+	helper = osxkeychain
+
+[core]
+	editor = nvim +startinsert
+	autocrlf = true
+	pager = less
+	ignorecase = false
+
+[pull]
+	rebase = true
+
+[push]
+	default = upstream
+
+[merge]
+	tool = vimdiff
+
+[rebase]
+	autosquash = true
+	autostash  = true
+
+[mergetool]
+	prompt = false
+	path = nvim
+
+[diff]
+	tool = vimdiff
+	algorithm = patience
+
+[pager]
+	diff = less
+	show = less
+
+[color]
+	ui = always
+	diff = auto
+	branch = auto
+	interactive = auto
+	status = auto
+
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	func = white bold
+	commit = blue bold
+	whitespace = brightred reverse
+
+[color "status"]
+	untracked = magenta
+	updated = green
+	changed = brightgreen
+
+[alias]
+	edit = "!nvim `git ls-files -m`"
+	# the acronym stands for "subtree add"
+	sba = "!f() { git subtree add --prefix $1 $2 master --squash; }; f"
+	# the acronym stands for "subtree update"
+	sbu = "!f() { git subtree pull --prefix $1 $2 master --squash; }; f"
+
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true

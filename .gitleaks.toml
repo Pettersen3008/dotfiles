@@ -1,0 +1,6 @@
+[allowlist]
+description = "Allowlist for local-only examples"
+paths = [
+  '''^\.config/secrets/''',
+  '''^nix/result''',
+]

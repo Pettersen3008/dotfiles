@@ -1,0 +1,4 @@
+# Copy to .sops.yaml and replace recipients before use.
+creation_rules:
+  - path_regex: ^secrets/.*\.sops\.(env|ya?ml|json)$
+    age: ["AGE_RECIPIENT_MAC","AGE_RECIPIENT_LINUX"]
