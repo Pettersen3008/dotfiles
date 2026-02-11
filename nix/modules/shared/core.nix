@@ -16,6 +16,7 @@
       just
       nano
       gh
+      dotnet-sdk
       ripgrep
       fd
       fzf
