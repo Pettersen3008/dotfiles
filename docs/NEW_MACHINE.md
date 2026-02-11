@@ -2,6 +2,11 @@
 
 Use this when setting up a fresh macOS or Arch machine.
 
+Related docs:
+- `docs/OPERATIONS.md`
+- `docs/TROUBLESHOOTING.md`
+- `docs/SECRETS.md`
+
 ## 1) Clone dotfiles
 
 ```bash
@@ -11,10 +16,10 @@ cd ~/.dotfiles
 
 ## 2) Install Nix
 
-macOS (recommended installer):
+macOS (official installer, daemon mode):
 
 ```bash
-curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+sh <(curl -L https://nixos.org/nix/install) --daemon
 ```
 
 Open a new shell, then verify:
@@ -27,13 +32,21 @@ nix --version
 
 ```bash
 cd ~/.dotfiles/nix
-nix run nix-darwin/master#darwin-rebuild -- build --flake .#mbp
+nix --extra-experimental-features "nix-command flakes" \
+  run nix-darwin/master#darwin-rebuild -- build --flake .#NAME_OF_MACHINE
 ```
 
 ## 4) Switch (macOS)
 
 ```bash
-nix run nix-darwin/master#darwin-rebuild -- switch --flake .#mbp
+nix --extra-experimental-features "nix-command flakes" \
+  run nix-darwin/master#darwin-rebuild -- switch --flake .#NAME_OF_MACHINE
+```
+
+After first successful switch, use:
+
+```bash
+darwin-rebuild switch --flake ~/.dotfiles/nix#NAME_OF_MACHINE
 ```
 
 ## 5) Enable hooks and security scan

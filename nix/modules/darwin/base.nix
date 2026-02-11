@@ -2,8 +2,12 @@
 {
   nixpkgs.config.allowUnfree = true;
 
-  # Determinate manages the Nix installation/daemon; disable nix-darwin's Nix management.
-  nix.enable = false;
+  # Let nix-darwin manage Nix installation/daemon lifecycle.
+  nix.enable = true;
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   users.users.${username} = {
     home = "/Users/${username}";
