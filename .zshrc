@@ -14,10 +14,7 @@ done
 # bun completions
 [ -s "/Users/pettersen/.bun/_bun" ] && source "/Users/pettersen/.bun/_bun"
 
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
-
-# mise shims must win over vite-plus node
+# mise shims first, so its node/bun/go/pnpm win over Homebrew
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 

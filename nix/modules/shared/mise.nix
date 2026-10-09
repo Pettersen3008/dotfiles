@@ -5,5 +5,7 @@
     [tools]
     node = "lts"
     bun = "latest"
+    go = "latest"
+    pnpm = "latest"
   '';
 }
