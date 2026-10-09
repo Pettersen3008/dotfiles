@@ -1,29 +1,23 @@
 if [[ -o interactive ]]; then
-  local brew_zfunc="/opt/homebrew/share/zsh/site-functions"
   fpath=("$HOME/.zsh/completions" "$HOME/.docker/completions" $fpath)
-
-  # Homebrew can leave a broken _brew symlink; drop that dir to keep compinit clean.
-  if [[ -L "${brew_zfunc}/_brew" && ! -e "${brew_zfunc}/_brew" ]]; then
-    fpath=(${fpath:#${brew_zfunc}})
-  fi
-
-  # If brew completion moved/vanished, clear stale compdump entries that reference it.
-  if [[ ! -e /opt/homebrew/share/zsh/site-functions/_brew ]]; then
-    rm -f "${ZDOTDIR:-$HOME}"/.zcompdump*
-  fi
 
   autoload -Uz compinit
   zstyle ':completion:*' use-cache on
   zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compcache"
-  compinit -C
+  # -C trusts the dump; a full compinit once a day picks up new or removed completions
+  if [[ $(date +%j) == $(date -r "${ZDOTDIR:-$HOME}/.zcompdump" +%j 2>/dev/null) ]]; then
+    compinit -C
+  else
+    compinit && touch "${ZDOTDIR:-$HOME}/.zcompdump"
+  fi
 fi
 
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh --shims 2>/dev/null || mise activate zsh)"
 fi
 
-# zoxide takes over cd.
-if command -v zoxide >/dev/null 2>&1; then
+# zoxide takes over cd. Not in Claude Code shells: its snapshot keeps the cd function but drops the hook, so zoxide's doctor warns on every command.
+if [[ -z "${CLAUDECODE:-}" ]] && command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh --cmd cd)"
 fi
 
