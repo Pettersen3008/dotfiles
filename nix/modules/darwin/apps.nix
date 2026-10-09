@@ -32,12 +32,12 @@
       "tmuxinator"
       "joshmedeski/sesh/sesh"
       "yarn" # bootstraps each repo's pinned Yarn
-      "docker/tap/sbx" # Docker Sandboxes
     ];
 
     # Not here on purpose: T3 Code Nightly, Tailscale and OpenVPN Connect were installed outside
     # Homebrew, and Company Portal (Intune) manages Outlook and OneDrive.
     casks = [
+      "docker/tap/sbx" # Docker Sandboxes
       "1password"
       "1password-cli"
       "alt-tab"
@@ -53,7 +53,6 @@
       "font-iosevka-etoile"
       "font-iosevka-nerd-font"
       "font-jetbrains-mono-nerd-font"
-      "font-monaspace-nerd-font"
       "font-monaspice-nerd-font"
       "font-noto-sans-symbols-2"
       "font-symbols-only-nerd-font"
