@@ -17,7 +17,6 @@
 
     taps = [
       "docker/tap"
-      "joshmedeski/sesh"
     ];
 
     brews = [
@@ -28,9 +27,6 @@
       "mkcert" # bank-dev local https
       "neovim"
       "tere"
-      "tmux"
-      "tmuxinator"
-      "joshmedeski/sesh/sesh"
       "yarn" # bootstraps each repo's pinned Yarn
     ];
 
