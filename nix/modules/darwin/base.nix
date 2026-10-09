@@ -24,5 +24,8 @@
     curl
   ];
 
+  # GUI apps (T3, editors) get it too; see .config/zsh/functions/general.zsh
+  launchd.user.envVariables.YARN_ENABLE_GLOBAL_CACHE = "true";
+
   system.stateVersion = 5;
 }
