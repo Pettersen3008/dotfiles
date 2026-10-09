@@ -1,31 +1,23 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
 host := "mbp"
-flake_dir := "{{justfile_directory()}}/nix"
+flake_dir := "./nix"
 
 help:
   @just --list
 
 build h=host:
-  cd "{{flake_dir}}"
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  nix run nix-darwin/master#darwin-rebuild -- build --flake .#{{h}}
+  darwin-rebuild build --flake "{{flake_dir}}#{{h}}"
 
 switch h=host:
-  cd "{{flake_dir}}"
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  nix run nix-darwin/master#darwin-rebuild -- switch --flake .#{{h}}
+  sudo darwin-rebuild switch --flake "{{flake_dir}}#{{h}}"
 
 update h=host:
-  cd "{{flake_dir}}"
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  nix flake update
-  nix run nix-darwin/master#darwin-rebuild -- build --flake .#{{h}}
+  nix flake update --flake "{{flake_dir}}"
+  darwin-rebuild build --flake "{{flake_dir}}#{{h}}"
 
 arch-home:
-  cd "{{flake_dir}}"
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  home-manager switch --flake .#pettersen@arch
+  home-manager switch --flake "{{flake_dir}}#pettersen@arch"
 
 hooks:
   ./scripts/install-git-hooks.sh
@@ -34,7 +26,7 @@ scan:
   gitleaks detect --source .
 
 cleanup *args:
-  ./nix/scripts/declutter.sh {{args}}
+  ./scripts/declutter.sh {{args}}
 
 sops-init:
   ./scripts/sops-init-age.sh
