@@ -2,6 +2,7 @@ set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
 host := "mbp"
 flake_dir := "./nix"
+mise := env("HOME") / ".local/bin/mise"
 
 help:
   @just --list
@@ -12,12 +13,19 @@ build h=host:
 switch h=host:
   sudo darwin-rebuild switch --flake "{{flake_dir}}#{{h}}"
 
-update h=host:
+update h=host: tools
   nix flake update --flake "{{flake_dir}}"
   darwin-rebuild build --flake "{{flake_dir}}#{{h}}"
 
-arch-home:
-  home-manager switch --flake "{{flake_dir}}#pettersen@arch"
+# mise lives outside nix so it can stay on the latest release.
+tools:
+  test -x {{mise}} || curl -fsSL https://mise.run | sh
+  {{mise}} self-update -y
+  {{mise}} install -y
+  {{mise}} upgrade -y
+
+arch-home: tools
+  nix run home-manager -- switch -b backup --flake "{{flake_dir}}#pettersen@arch"
 
 hooks:
   ./scripts/install-git-hooks.sh

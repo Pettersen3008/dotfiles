@@ -12,14 +12,14 @@ do
 done
 
 # bun completions
-[ -s "/Users/pettersen/.bun/_bun" ] && source "/Users/pettersen/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # mise shims first, so its node/bun/go/pnpm win over Homebrew
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 
-# Added by Antigravity CLI installer
-export PATH="/Users/pettersen/.local/bin:$PATH"
+# ~/.local/bin first: mise itself and personal scripts
+export PATH="$HOME/.local/bin:$PATH"
 
 # One Claude config for terminal and T3, so mcp/sync.sh in the skills repo covers both
 export CLAUDE_CONFIG_DIR="$HOME/.claude"

@@ -10,7 +10,7 @@
 
   homebrew = {
     enable = true;
-    # Anything not listed here is uninstalled on switch. CLI tools from nixpkgs live in core.nix.
+    # Anything not listed here is uninstalled on switch. CLI tools live in core.nix (nixpkgs) and mise.
     onActivation.cleanup = "uninstall";
     # Install GUI apps to user space to avoid repeated sudo prompts during cask installs.
     caskArgs.appdir = "/Users/${username}/Applications";
@@ -19,16 +19,6 @@
       "docker/tap"
     ];
 
-    brews = [
-      "bash"
-      "coreutils"
-      "gawk"
-      "libpq" # psql
-      "mkcert" # bank-dev local https
-      "neovim"
-      "tere"
-      "yarn" # bootstraps each repo's pinned Yarn
-    ];
 
     # Not here on purpose: T3 Code Nightly, Tailscale and OpenVPN Connect were installed outside
     # Homebrew, and Company Portal (Intune) manages Outlook and OneDrive.

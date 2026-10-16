@@ -1,73 +1,61 @@
+# Shared by macOS and omarchy. ~/.gitconfig (home-manager, git.nix) adds the per-OS 1Password signer.
 [user]
 	name = Sander Pettersen
-	email = sanderpette7@gmail.com
-	
-[filter "lfs"]
-	clean = git lfs clean %f
-	smudge = git lfs smudge %f
-	required = true
+	email = 48487730+Pettersen3008@users.noreply.github.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOV+u82mqjO04sgK68NstsBCjbFbq7bUWeXD4TqFBX5
 
-[credential]
-	helper = osxkeychain
-
-[core]
-	editor = nvim +startinsert
-	autocrlf = true
-	pager = less
-	ignorecase = false
-
-[pull]
-	rebase = true
-
-[push]
-	default = upstream
-
-[merge]
-	tool = vimdiff
-
-[rebase]
-	autosquash = true
-	autostash  = true
-
-[mergetool]
-	prompt = false
-	path = nvim
-
-[diff]
-	tool = vimdiff
-	algorithm = patience
-
-[pager]
-	diff = less
-	show = less
-
-[color]
-	ui = always
-	diff = auto
-	branch = auto
-	interactive = auto
-	status = auto
-
-[color "diff"]
-	meta = yellow
-	frag = magenta bold
-	func = white bold
-	commit = blue bold
-	whitespace = brightred reverse
-
-[color "status"]
-	untracked = magenta
-	updated = green
-	changed = brightgreen
-
-[alias]
-	edit = "!nvim `git ls-files -m`"
-	# the acronym stands for "subtree add"
-	sba = "!f() { git subtree add --prefix $1 $2 master --squash; }; f"
-	# the acronym stands for "subtree update"
-	sbu = "!f() { git subtree pull --prefix $1 $2 master --squash; }; f"
-
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
 [commit]
 	gpgsign = true
 [tag]
 	gpgSign = true
+
+[core]
+	editor = nvim +startinsert
+	autocrlf = input
+	ignorecase = false
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[push]
+	default = upstream
+[rebase]
+	autosquash = true
+	autostash = true
+[diff]
+	algorithm = histogram
+	colorMoved = default
+[merge]
+	conflictStyle = zdiff3
+
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[alias]
+	edit = "!nvim `git ls-files -m`"
+	sba = "!f() { git subtree add --prefix $1 $2 master --squash; }; f"
+	sbu = "!f() { git subtree pull --prefix $1 $2 master --squash; }; f"
+
+# Work account and email, kept out of this public repo.
+[includeIf "gitdir:~/Github/tfso/"]
+	path = ~/.config/git/tfso

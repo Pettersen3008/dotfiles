@@ -29,3 +29,5 @@ nix/result-*
 /starship
 /tmux
 /zsh
+result
+.config/git/tfso

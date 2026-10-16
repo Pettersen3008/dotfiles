@@ -1,0 +1,26 @@
+# Global tools. Each lives outside any node version, so switching node per repo never hides it.
+# Pin per project in mise.local.toml (globally gitignored), or mise.toml to share with the team.
+[tools]
+node = "lts"
+bun = "latest"
+go = "latest"
+pnpm = "latest"
+deno = "latest"
+uv = "latest"
+"npm:yarn" = "latest" # classic, hands off to each repo's pinned Yarn
+"npm:sfw" = "latest"  # npm/pnpm/yarn are aliased through it
+claude = "latest"
+codex = "latest"
+opencode = "latest"
+delta = "latest"
+hyperfine = "latest"
+"npm:@github/copilot" = "latest"
+"npm:@fission-ai/openspec" = "latest"
+
+[settings]
+# Work repos pin node in .nvmrc; mise ignores it unless told to.
+idiomatic_version_file_enable_tools = ["node"]
+
+[env]
+# mise upgrades Claude; its self-updater would drop a second copy in ~/.local/bin.
+DISABLE_AUTOUPDATER = "1"

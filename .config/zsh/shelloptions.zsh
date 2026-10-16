@@ -5,14 +5,14 @@ HISTFILE="${HISTFILE:-$HOME/.zsh_history}"
 HISTSIZE=100000
 SAVEHIST=100000
 
-export EDITOR="zed --wait"
-export VISUAL="code --wait"
+command -v zed >/dev/null && export EDITOR="zed --wait" || export EDITOR=nvim
+export VISUAL="$EDITOR"
 export GOPATH="$HOME/go"
 
 path=(
+  "$HOME/.nix-profile/bin"
   "$HOME/.local/bin"
   "$HOME/.cargo/bin"
-  "$HOME/.opencode/bin"
   "$HOME/.codeium/windsurf/bin"
   "$GOPATH/bin"
   "$HOME/.fly/bin"
@@ -22,7 +22,6 @@ path=(
 )
 typeset -gU path PATH
 
-[[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"
 
 # Local machine overrides (not committed).
 [[ -r "$HOME/.config/zsh/local.zsh" ]] && source "$HOME/.config/zsh/local.zsh"

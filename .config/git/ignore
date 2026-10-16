@@ -62,3 +62,8 @@ yarn-error.log*
 # Ag and Rg
 .ignore
 **/.claude/settings.local.json
+
+### Local-only config ###
+.work/
+mise.local.toml
+.mise.local.toml
