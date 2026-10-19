@@ -3,10 +3,11 @@
   programs.starship = {
     enable = true;
     settings = {
-      # Blank line + full-width header rule per command: the closest a plain terminal gets to Warp blocks.
-      add_newline = true;
+      # Full-width header rule per command: the closest a plain terminal gets to Warp blocks.
+      # The blank line between commands comes from zsh (completions.zsh) so tmux's prompt mark lands on this line.
+      add_newline = false;
       command_timeout = 1000;
-      format = "$directory$git_branch$git_status$fill$cmd_duration$status$line_break$character";
+      format = "[╭─](bright-black) $directory$git_branch$git_status$fill$cmd_duration$status$line_break[╰─](bright-black)$character";
       directory.style = "bold blue";
       git_branch = {
         format = "[$symbol$branch]($style) ";
@@ -23,8 +24,8 @@
         format = "[✗ $status]($style) ";
       };
       character = {
-        success_symbol = "[->](bold green) ";
-        error_symbol = "[->](bold red) ";
+        success_symbol = "[>](bold green) ";
+        error_symbol = "[>](bold red) ";
       };
     };
   };

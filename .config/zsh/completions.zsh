@@ -28,3 +28,15 @@ fi
 if [[ -o interactive ]] && [[ "${TERM:-}" != "dumb" ]] && command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
+
+# Blank line between commands, skipped before the first prompt.
+_prompt_gap() { [[ -n ${_prompt_drawn:-} ]] && print; _prompt_drawn=1 }
+precmd_functions+=(_prompt_gap)
+
+# Ghostty's shell integration doesn't load inside tmux; mark prompt and output starts (OSC 133) so tmux can jump.
+# The prompt mark lives in PS1 (zle's redraw would erase one printed from precmd), after the gap line.
+if [[ -n ${TMUX:-} ]]; then
+  PS1=$'%{\e]133;A\e\\%}'$PS1
+  _osc133_output() { print -n '\e]133;C\e\\' }
+  preexec_functions+=(_osc133_output)
+fi

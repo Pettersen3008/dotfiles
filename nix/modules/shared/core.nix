@@ -52,6 +52,7 @@ in
   xdg.configFile."git".source = dot ".config/git";
   xdg.configFile."mise/config.toml".source = dot ".config/mise/config.toml";
   xdg.configFile."tmux/tmux.conf".source = dot ".config/tmux/tmux.conf";
+  xdg.configFile."sesh/sesh.toml".source = dot ".config/sesh/sesh.toml";
   xdg.configFile."ghostty/config".source = dot ".config/ghostty/config";
   xdg.configFile."ghostty/os.conf".source =
     dot (if pkgs.stdenv.hostPlatform.isDarwin then ".config/ghostty/macos.conf" else ".config/ghostty/linux.conf");
@@ -59,4 +60,5 @@ in
   xdg.configFile."vicinae/shared.json".source = dot ".config/vicinae/shared.json";
 
   home.file.".local/bin/declutter".source = ../../scripts/declutter.sh;
+  home.file.".local/bin/term-start".source = dot "scripts/term-start.sh";
 }

@@ -8,8 +8,10 @@ window-padding-y = 14
 window-padding-balance = true
 unfocused-split-opacity = 0.85
 
-# Every window opens the tmux session for its folder via sesh; plain zsh if sesh/tmux are missing.
-command = /bin/zsh -lc 'sesh connect "$PWD" || exec zsh -l'
+# Windows open in tmux: last session, else the project picker (scripts/term-start.sh in dotfiles).
+command = /bin/zsh -lc 'exec ~/.local/bin/term-start'
+# Sessions outlive the window, so closing never loses work.
+confirm-close-surface = false
 
 # Inside tmux Ghostty can't see prompts, so the bar cursor is global; nvim and other TUIs still set their own.
 cursor-style = bar

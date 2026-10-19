@@ -1,0 +1,21 @@
+# Projects shown by cmd+P (with any running sessions). Add a [[session]] block to pin another one.
+
+[[session]]
+name = "website-bank-standalone"
+path = "~/Github/tfso/website-bank-standalone"
+
+[[session]]
+name = "kilde"
+path = "~/Github/tfso/kilde"
+
+[[session]]
+name = "apiworker-skatteverket-node"
+path = "~/Github/tfso/apiworker-skatteverket-node"
+
+[[session]]
+name = "api-bank-agreement"
+path = "~/Github/tfso/api-bank-agreement"
+
+[[session]]
+name = "api-banktransfer"
+path = "~/Github/tfso/api-banktransfer"
