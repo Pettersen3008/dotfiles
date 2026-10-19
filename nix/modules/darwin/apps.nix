@@ -29,12 +29,14 @@
       "alt-tab"
       "arc"
       "docker-desktop"
+      "ghostty"
       "google-chrome"
       "jordanbaird-ice"
       "microsoft-teams" # drop once Company Portal manages it
       "obsidian" # project-journal skill writes here
       "raycast"
       "slack"
+      "vicinae"
       "warp"
       "zed"
       "font-courier-prime"
