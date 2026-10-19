@@ -60,3 +60,21 @@ ports() {
     printf '%-6s %-7s %-12s %-26s %s\n' $port $pid "${cmd[1,12]}" "${tab:--}" "${cwd/#$HOME/~}"
   done
 }
+
+# pin / unpin: add or remove the current repo (or folder) in cmd+P's project list (sesh.toml).
+# Paths are stored as ~/... so the list works on both machines.
+_sesh_target() {
+  local d=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+  [[ $d == $HOME/* ]] && reply=(${d:t} "~${d#$HOME}") || reply=(${d:t} $d)
+}
+pin() {
+  local f=~/.config/sesh/sesh.toml; _sesh_target
+  grep -qF "path = \"$reply[2]\"" $f && { echo "already pinned: $reply[1]"; return }
+  printf '\n[[session]]\nname = "%s"\npath = "%s"\n' $reply >> $f && echo "pinned $reply[1]"
+}
+unpin() {
+  local f=~/.config/sesh/sesh.toml kept; _sesh_target
+  # Paragraph mode: each [[session]] block is one record. Write through the symlink, never replace it.
+  kept=$(awk -v p="path = \"$reply[2]\"" 'BEGIN { RS = ""; ORS = "\n\n" } index($0, p) == 0' $f)
+  print -r -- "$kept" > $f && echo "unpinned $reply[1]"
+}
