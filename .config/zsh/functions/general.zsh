@@ -40,3 +40,23 @@ load_npm_tokens
 
 # The Berry repos set enableGlobalCache: false; only an env var beats their .yarnrc.yml
 export YARN_ENABLE_GLOBAL_CACHE=true
+
+# Listening TCP ports of your own dev processes, with the tmux session:tab that owns them.
+# Only processes started inside a folder under ~ (not ~ itself or ~/Library), so menu-bar apps stay out. Stop one with `kill <pid>`.
+ports() {
+  local panes=$(tmux list-panes -a -F '#{pane_pid} #S:#I' 2>/dev/null) pid port cwd p tab cmd
+  printf '%-6s %-7s %-12s %-26s %s\n' PORT PID COMMAND TMUX DIR
+  lsof -nP -iTCP -sTCP:LISTEN 2>/dev/null | awk 'NR>1 {sub(/.*:/, "", $9); print $2, $9}' | sort -u |
+  while read -r pid port; do
+    cwd=$(lsof -a -p $pid -d cwd -Fn 2>/dev/null | sed -n 's/^n//p')
+    [[ $cwd == $HOME/* && $cwd != $HOME/Library/* ]] || continue
+    p=$pid tab=
+    while (( p > 1 )); do
+      tab=$(awk -v p=$p '$1 == p {print $2}' <<< $panes)
+      [[ -n $tab ]] && break
+      p=$(ps -o ppid= -p $p | tr -d ' ')
+    done
+    cmd=$(basename "$(ps -o comm= -p $pid)")
+    printf '%-6s %-7s %-12s %-26s %s\n' $port $pid "${cmd[1,12]}" "${tab:--}" "${cwd/#$HOME/~}"
+  done
+}

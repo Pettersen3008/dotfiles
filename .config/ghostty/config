@@ -1,0 +1,23 @@
+# Shared by macOS and Omarchy. Per-OS settings (theme, size, keys) live in os.conf,
+# which home-manager links from macos.conf or linux.conf and which overrides this file.
+
+font-family = JetBrainsMono Nerd Font Mono
+adjust-cell-height = 15%
+window-padding-x = 20
+window-padding-y = 14
+window-padding-balance = true
+unfocused-split-opacity = 0.85
+
+# Every window opens the tmux session for its folder via sesh; plain zsh if sesh/tmux are missing.
+command = /bin/zsh -lc 'sesh connect "$PWD" || exec zsh -l'
+
+# Inside tmux Ghostty can't see prompts, so the bar cursor is global; nvim and other TUIs still set their own.
+cursor-style = bar
+cursor-style-blink = false
+mouse-hide-while-typing = true
+
+# Outside tmux: OSC 133 prompt marks (click-to-move, prompt jumps, output selection).
+# ssh-env: remote shells get TERM=xterm-256color instead of an unknown xterm-ghostty.
+shell-integration-features = cursor,ssh-env
+
+config-file = ?"~/.config/ghostty/os.conf"

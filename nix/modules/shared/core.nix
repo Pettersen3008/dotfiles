@@ -31,12 +31,17 @@ in
       mkcert # bank-dev local https
       neovim
       tere
+      tmux
+      sesh
     ]
     # Linux already has GNU tools and a current bash.
     ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       bashInteractive
       coreutils-prefixed # g-prefixed like Homebrew's, so BSD ls/cp stay default
       gawk
+    ]
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+      lsof # `ports` zsh function; macOS ships it
     ];
 
   home.sessionVariables = {
@@ -46,6 +51,12 @@ in
   home.file.".zshrc".source = dot ".zshrc";
   xdg.configFile."git".source = dot ".config/git";
   xdg.configFile."mise/config.toml".source = dot ".config/mise/config.toml";
+  xdg.configFile."tmux/tmux.conf".source = dot ".config/tmux/tmux.conf";
+  xdg.configFile."ghostty/config".source = dot ".config/ghostty/config";
+  xdg.configFile."ghostty/os.conf".source =
+    dot (if pkgs.stdenv.hostPlatform.isDarwin then ".config/ghostty/macos.conf" else ".config/ghostty/linux.conf");
+  # Vicinae rewrites settings.json from its GUI, so only this import is shared; settings.json lists it in "imports".
+  xdg.configFile."vicinae/shared.json".source = dot ".config/vicinae/shared.json";
 
   home.file.".local/bin/declutter".source = ../../scripts/declutter.sh;
 }
