@@ -31,7 +31,6 @@ in
       mkcert # bank-dev local https
       neovim
       tere
-      tmux
       sesh
     ]
     # Linux already has GNU tools and a current bash.
@@ -39,6 +38,7 @@ in
       bashInteractive
       coreutils-prefixed # g-prefixed like Homebrew's, so BSD ls/cp stay default
       gawk
+      tmux # Omarchy installs its own with pacman; one tmux per machine avoids client/server version mismatches
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       lsof # `ports` zsh function; macOS ships it
@@ -51,9 +51,11 @@ in
   home.file.".zshrc".source = dot ".zshrc";
   xdg.configFile."git".source = dot ".config/git";
   xdg.configFile."mise/config.toml".source = dot ".config/mise/config.toml";
-  xdg.configFile."tmux/tmux.conf".source = dot ".config/tmux/tmux.conf";
   xdg.configFile."sesh/sesh.toml".source = dot ".config/sesh/sesh.toml";
-  xdg.configFile."ghostty/config".source = dot ".config/ghostty/config";
+  # Shared tmux/Ghostty behavior. On Omarchy, its own tmux.conf and ghostty/config stay in place (its migrations
+  # rewrite them, which would break a symlink) and include these files on their last line.
+  xdg.configFile."tmux/dotfiles.conf".source = dot ".config/tmux/dotfiles.conf";
+  xdg.configFile."ghostty/dotfiles.conf".source = dot ".config/ghostty/dotfiles.conf";
   xdg.configFile."ghostty/os.conf".source =
     dot (if pkgs.stdenv.hostPlatform.isDarwin then ".config/ghostty/macos.conf" else ".config/ghostty/linux.conf");
   # Vicinae rewrites settings.json from its GUI, so only this import is shared; settings.json lists it in "imports".

@@ -10,6 +10,12 @@
 
   home.file.".local/bin/prune-repos".source = ../scripts/prune-repos.sh;
 
+  # macOS base configs; Omarchy keeps its own and includes the shared dotfiles.conf files (core.nix).
+  xdg.configFile."tmux/tmux.conf".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/tmux/tmux.conf";
+  xdg.configFile."ghostty/config".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/ghostty/dotfiles.conf";
+
   # Weekly: trash clones in ~/Github/tfso idle for 30 days. Log: ~/Library/Logs/prune-repos.log
   launchd.agents.prune-repos = {
     enable = true;
